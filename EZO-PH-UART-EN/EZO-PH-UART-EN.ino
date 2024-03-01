@@ -1,4 +1,13 @@
 
+/*
+ * Project: Serial communication between an Atlas Scientific pH sensor and an Arduino.
+ * Description : This project displays the pH measurement every second using an EZO™ pH Circuit sensor from Atlas Scientific connected to an Arduino microcontroller. The sensor can be configured to communicate via UART or I2C.
+ * Author : Richedor LALEYE (Adecola)
+ * Date: October 9, 2023
+ * Version: 2
+ * License: MIT 
+ */
+
 #include <SoftwareSerial.h>                           //we have to include the SoftwareSerial library, or else we can't use it
 #define rx 2                                          //define what pin rx is going to be
 #define tx 3                                          //define what pin tx is going to be

@@ -9,58 +9,58 @@
  */
 
 
-#include <SoftwareSerial.h>                           //we have to include the SoftwareSerial library, or else we can't use it
-#define rx 2                                          //define what pin rx is going to be
-#define tx 3                                          //define what pin tx is going to be
+#include <SoftwareSerial.h>                           // nous devons inclure la bibliothèque SoftwareSerial, sinon nous ne pouvons pas l'utiliser
+#define rx 2                                          // définir quelle broche rx va être
+#define tx 3                                          // définir quelle broche tx va être
  
-SoftwareSerial myserial(rx, tx);                      //define how the soft serial port is going to work
+SoftwareSerial myserial(rx, tx);                      // définir comment le port série logiciel va fonctionner
  
-String inputstring = "";                              //a string to hold incoming data from the PC
-String sensorstring = "";                             //a string to hold the data from the Atlas Scientific product
-boolean input_string_complete = false;                //have we received all the data from the PC
-boolean sensor_string_complete = false;               //have we received all the data from the Atlas Scientific product
-float pH;                                             //used to hold a floating-point number that is the pH
+String inputstring = "";                              // une chaîne pour contenir les données entrantes du PC
+String sensorstring = "";                             // une chaîne pour contenir les données du produit Atlas Scientific
+boolean input_string_complete = false;                // avons-nous reçu toutes les données du PC
+boolean sensor_string_complete = false;               // avons-nous reçu toutes les données du produit Atlas Scientific
+float pH;                                             // utilisé pour contenir un nombre à virgule flottante qui est le pH
  
  
 void setup()
 {
-  Serial.begin(9600);                                 //set baud rate for the hardware serial port_0 to 9600
-  myserial.begin(9600);                               //set baud rate for the software serial port to 9600
-  inputstring.reserve(10);                            //set aside some bytes for receiving data from the PC
-  sensorstring.reserve(30);                           //set aside some bytes for receiving data from Atlas Scientific product
+  Serial.begin(9600);                                 // définir le débit en bauds pour le port série matériel_0 à 9600
+  myserial.begin(9600);                               // définir le débit en bauds pour le port série logiciel à 9600
+  inputstring.reserve(10);                            // mettre de côté quelques octets pour recevoir des données du PC
+  sensorstring.reserve(30);                           // mettre de côté quelques octets pour recevoir des données du produit Atlas Scientific
 }
  
 void serialEvent()
 {
-  inputstring = Serial.readStringUntil(13);           //read the string until we see a <CR>
-  input_string_complete = true;                       //set the flag used to tell if we have received a completed string from the PC
+  inputstring = Serial.readStringUntil(13);           // lire la chaîne jusqu'à ce que nous voyions un <CR>
+  input_string_complete = true;                       // définir le drapeau utilisé pour indiquer si nous avons reçu une chaîne complète du PC
 }
  
  
 void loop()
 {
-  if (input_string_complete == true)                  //if a string from the PC has been received in its entirety
+  if (input_string_complete == true)                  // si une chaîne du PC a été reçue dans son intégralité
   {
-    myserial.print(inputstring);                      //send that string to the Atlas Scientific product
-    myserial.print('\r');                             //add a <CR> to the end of the string
-    inputstring = "";                                 //clear the string
-    input_string_complete = false;                    //reset the flag used to tell if we have received a completed string from the PC
+    myserial.print(inputstring);                      // envoyer cette chaîne au produit Atlas Scientific
+    myserial.print('\r');                             // ajouter un <CR> à la fin de la chaîne
+    inputstring = "";                                 // effacer la chaîne
+    input_string_complete = false;                    // réinitialiser le drapeau utilisé pour indiquer si nous avons reçu une chaîne complète du PC
   }
  
-  if (myserial.available() > 0)                       //if we see that the Atlas Scientific product has sent a character
+  if (myserial.available() > 0)                       // si nous voyons que le produit Atlas Scientific a envoyé un caractère
   {
-    char inchar = (char)myserial.read();              //get the char we just received
-    sensorstring += inchar;                           //add the char to the var called sensorstring
-    if (inchar == '\r')                               //if the incoming character is a <CR>
+    char inchar = (char)myserial.read();              // obtenir le caractère que nous venons de recevoir
+    sensorstring += inchar;                           // ajouter le caractère à la variable appelée sensorstring
+    if (inchar == '\r')                               // si le caractère entrant est un <CR>
     {
-      sensor_string_complete = true;                  //set the flag
+      sensor_string_complete = true;                  // définir le drapeau
     }
   }
  
-  if (sensor_string_complete == true)                 //if a string from the Atlas Scientific product has been received in its entirety
+  if (sensor_string_complete == true)                 // si une chaîne du produit Atlas Scientific a été reçue dans son intégralité
   {
-    Serial.println(sensorstring);                     //send that string to the PC's serial monitor
-    sensorstring = "";                                //clear the string
-    sensor_string_complete = false;                   //reset the flag used to tell if we have received a completed string from the Atlas Scientific product
+    Serial.println(sensorstring);                     // envoyer cette chaîne au moniteur série du PC
+    sensorstring = "";                                // effacer la chaîne
+    sensor_string_complete = false;                   // réinitialiser le drapeau utilisé pour indiquer si nous avons reçu une chaîne complète du produit Atlas Scientific
   }
 }

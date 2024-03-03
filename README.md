@@ -1,4 +1,4 @@
-# Communication Série entre un Capteur de pH Atlas Scientific et un Arduino
+# Communication Série entre un Capteur de pH Atlas Scientific et une carte Arduino
 
 Ce projet permet d'afficher chaque seconde la mesure du pH à l'aide d'un capteur EZO™ pH Circuit de chez Atlas Scientific connecté à un microcontrôleur Arduino. Le capteur peut être configuré pour communiquer via UART ou I2C.
 
